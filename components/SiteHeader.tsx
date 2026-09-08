@@ -23,7 +23,7 @@ export default function SiteHeader({ solid = false }: { solid?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return <header className={`nav ${solid || scrolled ? "nav-black" : ""}`}>
+  return <header className={`nav ${solid || scrolled ? "nav-black" : ""} ${scrolled ? "nav-scrolled" : ""}`}>
     <a href={asset("/")} className="brand"><img src={asset("/logos/ideamos-light.webp")} alt="Ideamos" width="870" height="213" loading="eager" decoding="async" fetchPriority="high" /></a>
     <nav className="nav-links desktop-navigation" aria-label="Navegación principal">
       {navigation.map(([label, href]) => <a key={href} href={asset(href)}>{label}</a>)}

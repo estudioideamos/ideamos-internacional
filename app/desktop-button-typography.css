@@ -8,6 +8,25 @@
 
 /* One shared CTA appearance on desktop, including hover and keyboard focus. */
 @media (min-width:981px){
+  #site-root#site-root .nav{
+    background:linear-gradient(180deg,rgba(9,9,12,.28),rgba(5,5,8,.12))!important;
+    border-bottom:1px solid rgba(255,255,255,.16)!important;
+    box-shadow:0 8px 30px rgba(0,0,0,.08)!important;
+    -webkit-backdrop-filter:blur(18px) saturate(145%);
+    backdrop-filter:blur(18px) saturate(145%);
+    transition:background-color .35s ease,background .35s ease,border-color .35s ease,box-shadow .35s ease!important;
+  }
+
+  #site-root#site-root .nav.nav-scrolled{
+    background:rgba(3,3,3,.96)!important;
+    border-bottom-color:rgba(255,255,255,.12)!important;
+    box-shadow:0 12px 34px rgba(0,0,0,.32)!important;
+  }
+
+  #site-root#site-root .nav .desktop-navigation{
+    font-size:calc(clamp(11.5px,.78vw,13px) + 1px)!important;
+  }
+
   #site-root#site-root :is(
     .nav-contact,.cta-glow,.orange-cta,.cases-action,
     .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
@@ -42,8 +61,15 @@
     transform:none!important;
     filter:none!important;
     animation:none!important;
-    transition:transform .28s ease,box-shadow .28s ease!important;
+    transition:letter-spacing .28s ease,background .28s ease,box-shadow .28s ease!important;
     cursor:pointer;
+  }
+
+  /* The header CTA is the only outlined variant. */
+  #site-root#site-root .nav .nav-contact{
+    border:2px solid #ff5a00!important;
+    background:rgba(0,0,0,.08)!important;
+    box-shadow:none!important;
   }
 
   #site-root#site-root :is(
@@ -74,8 +100,23 @@
     .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
     .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
   ):is(:hover,:focus-visible):not(:disabled){
-    transform:translateY(-2px)!important;
-    box-shadow:0 0 35px rgba(255,78,0,.45)!important;
+    letter-spacing:3px!important;
+    background:
+      radial-gradient(circle at 50% 125%,rgba(255,190,120,.3),transparent 58%),
+      linear-gradient(105deg,#ff6b08,#d72c00)!important;
+    box-shadow:
+      0 0 18px rgba(255,78,0,.35),
+      0 0 42px rgba(255,78,0,.18),
+      inset 0 0 18px rgba(255,190,120,.12)!important;
+    transform:none!important;
+  }
+
+  #site-root#site-root .nav .nav-contact:is(:hover,:focus-visible){
+    background:rgba(255,90,0,.08)!important;
+    box-shadow:
+      0 0 18px rgba(255,78,0,.28),
+      0 0 38px rgba(255,78,0,.14),
+      inset 0 0 18px rgba(255,90,0,.07)!important;
   }
 
   #site-root#site-root :is(
