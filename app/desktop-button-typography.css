@@ -1,0 +1,101 @@
+@font-face{
+  font-family:"Poppins CTA";
+  src:url("/fonts/Poppins-600.ttf") format("truetype");
+  font-style:normal;
+  font-weight:600;
+  font-display:swap;
+}
+
+/* One shared CTA appearance on desktop, including hover and keyboard focus. */
+@media (min-width:981px){
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  ){
+    display:inline-flex!important;
+    position:relative;
+    align-items:center!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    width:fit-content!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:52px!important;
+    min-height:52px!important;
+    padding:0 35px!important;
+    gap:0!important;
+    border:1px solid rgba(255,125,55,.7)!important;
+    border-radius:999px!important;
+    background:linear-gradient(105deg,#ff6200,#c82400)!important;
+    color:#fff!important;
+    font-family:"Poppins CTA",Arial,sans-serif!important;
+    font-size:11px!important;
+    font-weight:600!important;
+    line-height:1!important;
+    letter-spacing:1px!important;
+    text-transform:uppercase!important;
+    text-decoration:none!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+    box-shadow:0 0 25px rgba(255,78,0,.28)!important;
+    transform:none!important;
+    filter:none!important;
+    animation:none!important;
+    transition:transform .28s ease,box-shadow .28s ease!important;
+    cursor:pointer;
+  }
+
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  ) :is(span,strong){
+    color:inherit!important;
+    font:inherit!important;
+    letter-spacing:inherit!important;
+  }
+
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  )::before,
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  )::after{
+    content:none!important;
+  }
+
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  ):is(:hover,:focus-visible):not(:disabled){
+    transform:translateY(-2px)!important;
+    box-shadow:0 0 35px rgba(255,78,0,.45)!important;
+  }
+
+  #site-root#site-root :is(
+    .nav-contact,.cta-glow,.orange-cta,.cases-action,
+    .shops-red-cta,.md-action,.pw-action,.price-cta,.price-more,
+    .contact-submit,.ideamos-footer__whatsapp,footer .footer-brand>a
+  ):focus-visible{
+    outline:2px solid #ff6200;
+    outline-offset:4px;
+  }
+
+  #site-root#site-root .contact-submit:disabled{
+    opacity:.6;
+    cursor:wait;
+  }
+
+  #site-root#site-root .case-lightbox-close,
+  #site-root#site-root .case-lightbox-close span{
+    font-size:11px!important;
+    font-weight:600!important;
+  }
+}
+
