@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_NAME = "Ideamos";
 export const SITE_URL = "https://ideamos.com.ar";
-export const DEFAULT_SOCIAL_IMAGE = "/og-precios.png";
+export const DEFAULT_SOCIAL_IMAGE = "/og-ideamos.jpg";
 
 type PageMetadataOptions = {
   title: string;

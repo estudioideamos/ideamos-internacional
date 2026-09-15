@@ -4,6 +4,7 @@ import LightGridFrame from "../../components/LightGridFrame";
 import SiteHeader from "../../components/SiteHeader";
 import PortfolioSection from "../../components/PortfolioSection";
 import TestimonialSection from "../../components/TestimonialSection";
+import PageStructuredData from "../../components/PageStructuredData";
 import { createPageMetadata } from "../../lib/seo";
 
 const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
@@ -15,7 +16,14 @@ export const metadata = createPageMetadata({
 });
 
 export default function Page() {
-  return <main className="internal-page cases-page">
+  return <>
+  <PageStructuredData
+    name="Casos de éxito en diseño web"
+    description="Conocé proyectos reales de diseño web, ecommerce y marketing digital creados por Ideamos para marcas y empresas de distintos rubros."
+    path="/casos-de-exito/"
+    pageType="CollectionPage"
+  />
+  <main className="internal-page cases-page">
     <SiteHeader />
 
     <section className="hero internal-home-hero matches-home-hero" id="inicio">
@@ -55,7 +63,7 @@ export default function Page() {
       <div className="cases-featured-work" aria-label="Proyecto destacado Trébol Café">
         <i className="cases-featured-shape" aria-hidden="true" />
         <div className="cases-featured-device">
-          <img src={asset("/media/casos-exito/desk-007.jpg")} alt="Tienda online de Trébol Café desarrollada por Ideamos" loading="lazy" />
+          <img src={asset("/media/casos-exito/desk-007.jpg")} alt="Tienda online de Trébol Café desarrollada por Ideamos" width="1324" height="1000" loading="lazy" decoding="async" />
         </div>
         <p><span>PROYECTO DESTACADO</span><b>Trébol Café</b></p>
       </div>
@@ -70,5 +78,6 @@ export default function Page() {
     </LightGridFrame>
 
     <HomeClosingSections showAdvisory={false} darkGrid />
-  </main>;
+  </main>
+  </>;
 }

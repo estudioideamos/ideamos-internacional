@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Security audit
+        run: npm audit --audit-level=high
       - name: Detect Pages base path
         id: pages-path
         shell: bash

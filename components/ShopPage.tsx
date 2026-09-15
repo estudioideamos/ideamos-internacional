@@ -69,7 +69,7 @@ export default function ShopPage() {
         <div className="shops-intro-copy">
           <div className="shops-happy" aria-label="Más de 2000 clientes felices">
             <span className="shops-happy-avatars" aria-hidden="true">
-              {["003", "002", "001"].map((name) => <img key={name} src={asset(`/media/client-${name}.png`)} alt="" width="326" height="322" loading="lazy" decoding="async" />)}
+              {["003", "002", "001"].map((name) => <img key={name} src={asset(`/media/client-${name}.webp`)} alt="" width="326" height="322" loading="lazy" decoding="async" />)}
             </span>
             <span className="shops-happy-label">MÁS DE 2000 CLIENTES FELICES</span>
           </div>
@@ -79,7 +79,7 @@ export default function ShopPage() {
           <a className="orange-cta shops-red-cta" href={WHATSAPP_URL}>QUIERO AGENDAR UNA ASESORÍA</a>
         </div>
         <div className="shops-laptop-visual">
-          <img src={asset("/media/sunglasses.png")} alt="Tienda online de anteojos desarrollada por Ideamos" />
+          <img src={asset("/media/sunglasses.webp")} alt="Tienda online de anteojos desarrollada por Ideamos" width="1200" height="920" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>

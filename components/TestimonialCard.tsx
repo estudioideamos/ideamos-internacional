@@ -30,7 +30,7 @@ export default function TestimonialCard({
       </h2>
       <div className="home-testimonials__rating" aria-label="5 de 5 estrellas">★★★★★ <small>(5.0)</small></div>
       <div className="home-testimonials__person">
-        <img src={asset(testimonial.avatar)} alt="" loading="lazy" decoding="async" />
+        <img src={asset(testimonial.avatar)} alt="" width="300" height="300" loading="lazy" decoding="async" />
         <div><strong>{testimonial.name}</strong><span>{testimonial.role}</span></div>
       </div>
       <div className="home-testimonials__actions">
@@ -41,7 +41,7 @@ export default function TestimonialCard({
 
     <div className="home-testimonials__visual">
       <button className="home-testimonials__media" type="button" onClick={onPlay} aria-label={`Ver video testimonial de ${testimonial.name}`}>
-        <img src={asset(testimonial.image)} alt={testimonial.alt} loading="lazy" decoding="async" />
+        <img src={asset(testimonial.image)} alt={testimonial.alt} width="960" height="720" loading="lazy" decoding="async" />
         <span className="home-testimonials__play" aria-hidden="true">▶</span>
       </button>
       {controls}

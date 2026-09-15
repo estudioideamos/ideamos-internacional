@@ -1,4 +1,5 @@
 import InternalPage, { ServicePage } from "../../components/InternalPage";
+import PageStructuredData from "../../components/PageStructuredData";
 import { createPageMetadata } from "../../lib/seo";
 
 export const metadata = createPageMetadata({
@@ -21,4 +22,12 @@ const page: ServicePage = {
   darkTitle:"Movemos lo que importa",
   darkCopy:"Escribinos hoy y empecemos a ordenar prioridades, detectar oportunidades y definir el próximo paso.",
 };
-export default function Page(){return <InternalPage page={page}/>;}
+export default function Page(){return <>
+  <PageStructuredData
+    name="Contacto — Hablemos de tu proyecto"
+    description="Contanos qué necesita tu negocio. Coordiná una asesoría online sin cargo con Ideamos y recibí ideas concretas y próximos pasos."
+    path="/contacto/"
+    pageType="ContactPage"
+  />
+  <InternalPage page={page}/>
+</>;}

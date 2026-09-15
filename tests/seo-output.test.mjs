@@ -49,9 +49,13 @@ test("robots y archivos para agentes están publicados", async () => {
   const llms = await readFile(new URL("llms.txt", out), "utf8");
   assert.match(robots, /Allow: \//);
   assert.match(robots, /Sitemap: https:\/\/ideamos\.com\.ar\/sitemap\.xml/);
+  assert.match(robots, /OAI-SearchBot/);
+  assert.match(robots, /ClaudeBot/);
+  assert.match(robots, /PerplexityBot/);
   assert.match(llms, /^# Ideamos/m);
   assert.match(llms, /https:\/\/ideamos\.com\.ar\/llms-full\.txt/);
   await access(new URL("security.txt", out));
+  await access(new URL(".well-known/security.txt", out));
   await access(new URL("public/googlecac1ad33023af32c.html", root));
 });
 
@@ -68,7 +72,43 @@ test("la portada conserva las optimizaciones críticas de rendimiento", async ()
   }
   assert.ok(html.includes("/media/screen-1.webp"));
   assert.ok(html.includes('rel="preload" href="/fonts/Gilroy-ExtraBold.otf"'));
+  assert.ok(html.includes('rel="preload" href="/media/hero-poster.webp"'));
+  assert.ok(html.includes('poster="/media/hero-poster.webp"'));
+  assert.ok(html.includes("/media/client-001.webp"));
+  for (const image of html.match(/<img\b[^>]*>/g) ?? []) {
+    assert.match(image, /\bwidth=/, image);
+    assert.match(image, /\bheight=/, image);
+  }
   assert.ok(stylesheets.length <= 2, `La portada carga ${stylesheets.length} hojas de estilo`);
+});
+
+test("las páginas internas publican schema específico y breadcrumbs", async () => {
+  const servicePages = pagePaths.slice(1, 5);
+  for (const [file] of pagePaths.slice(1)) {
+    const html = await readFile(new URL(file, out), "utf8");
+    assert.match(html, /"@type":"BreadcrumbList"/, file);
+  }
+  for (const [file] of servicePages) {
+    const html = await readFile(new URL(file, out), "utf8");
+    assert.match(html, /"@type":"Service"/, file);
+  }
+});
+
+test("los recursos visuales críticos usan formatos livianos y dimensiones", async () => {
+  const sourceFiles = [
+    "app/page.tsx",
+    "components/ShopPage.tsx",
+    "components/TestimonialCard.tsx",
+    "components/PosicionamientoWebPage.tsx",
+    "components/MarketingDigitalPage.tsx",
+  ];
+  const source = (await Promise.all(sourceFiles.map((file) => readFile(new URL(file, root), "utf8")))).join("\n");
+
+  assert.doesNotMatch(source, /client-.*\.png/);
+  assert.doesNotMatch(source, /marketing-google-00[01]\.jpg/);
+  assert.doesNotMatch(source, /posicionamiento-(phone|tablet|maps)\.png/);
+  assert.match(source, /width=/);
+  assert.match(source, /loading="lazy"/);
 });
 
 test("el formulario conserva las defensas antispam", async () => {

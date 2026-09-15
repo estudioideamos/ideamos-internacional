@@ -9,6 +9,13 @@ import { WHATSAPP_URL as whatsapp } from "../lib/whatsapp";
 
 const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
 
+const imageDimensions: Record<string, readonly [number, number]> = {
+  "/media/marketing-img-002.webp": [1100, 835],
+  "/media/marketing-google-000.webp": [1305, 923],
+  "/media/marketing-google-001.webp": [1305, 923],
+  "/media/marketing-modulo.webp": [1536, 1175],
+};
+
 function Action({ children }: { children: React.ReactNode }) {
   return <a className="orange-cta md-action" href={whatsapp}>{children}</a>;
 }
@@ -26,10 +33,11 @@ function DeviceMedia({
   contain?: boolean;
   className?: string;
 }) {
+  const dimensions = imageDimensions[src];
   return <div className={`md-device ${contain ? "is-contained" : ""} ${className}`}>
     {video
       ? <ManagedBackgroundVideo src={asset(src)} />
-      : <img src={asset(src)} alt={alt} loading="lazy" decoding="async" />}
+      : <img src={asset(src)} alt={alt} width={dimensions?.[0]} height={dimensions?.[1]} loading="lazy" decoding="async" />}
   </div>;
 }
 
@@ -114,7 +122,7 @@ export default function MarketingDigitalPage() {
           <div><b>Traemos a tu web personas que ya buscan lo que ofrecés</b> y las convertimos en consultas. Con Google Ads te mostramos primero cuando te buscan y con SEO hacemos que te encuentren sin pagar cada clic. Medimos llamadas y mensajes para invertir donde rinde más.</div>
           <Action>Quiero estar primero en Google</Action>
         </div>
-        <DeviceMedia src="/media/marketing-google-000.jpg" alt="Panel de resultados de SEO y Google Ads" contain className="md-dashboard-visual" />
+        <DeviceMedia src="/media/marketing-google-000.webp" alt="Panel de resultados de SEO y Google Ads" contain className="md-dashboard-visual" />
       </div>
     </section>
 
@@ -126,7 +134,7 @@ export default function MarketingDigitalPage() {
         <div><b>Creamos contenido alineado a tu marca, gestionamos tus redes sociales con criterio y activamos campañas en Meta para alcanzar a nuevos públicos.</b> Medimos impacto, afinamos la pauta y enfocamos el mensaje para atraer consultas reales, no solo likes.</div>
         <Action>Quiero hacer crecer mis redes</Action>
       </div>
-      <DeviceMedia src="/media/marketing-google-001.jpg" alt="Panel de resultados de redes sociales y campañas digitales" contain className="md-dashboard-visual" />
+      <DeviceMedia src="/media/marketing-google-001.webp" alt="Panel de resultados de redes sociales y campañas digitales" contain className="md-dashboard-visual" />
     </section>
 
     <section className="md-section md-centered-intro md-method">

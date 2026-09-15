@@ -54,9 +54,16 @@ Los títulos, descripciones, datos sociales y URLs canónicas se generan desde `
 ## Rendimiento
 
 - Las capturas del sitio se publican en WebP y con dimensiones explícitas.
-- El video decorativo principal se reserva para escritorio; en móvil se prioriza el contenido.
+- El video decorativo principal usa un poster WebP inmediato y se reserva para escritorio; en móvil se prioriza el contenido.
 - Google Analytics se carga tras la primera interacción o cuando la página queda inactiva.
 - Las fuentes externas no deben agregarse a la ruta crítica.
+
+## Seguridad y mantenimiento
+
+- Las dependencias se mantienen fijadas en versiones exactas y se auditan antes de publicar.
+- Dependabot revisa semanalmente npm y mensualmente las acciones de GitHub.
+- El formulario incluye honeypot, límite temporal, bloqueo de duplicados y timeout.
+- El contacto de seguridad se publica en `/.well-known/security.txt`.
 
 ## Publicación
 

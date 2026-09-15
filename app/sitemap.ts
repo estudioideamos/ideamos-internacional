@@ -3,7 +3,7 @@ import { SITE_URL } from "../lib/seo";
 
 export const dynamic = "force-static";
 
-const updated = "2026-08-31";
+const updated = "2026-09-15";
 const pages: Array<{ path: string; priority: number; changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]> }> = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
   { path: "/diseno-web-autoadministrable/", priority: 0.95, changeFrequency: "monthly" },

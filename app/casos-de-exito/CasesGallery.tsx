@@ -28,7 +28,7 @@ function WorkGroup({
       aria-label={`Ampliar ${work.alt}`}
       onClick={() => onOpen(work)}
     >
-      <img src={asset(work.src)} alt={work.alt} loading="lazy" />
+      <img src={asset(work.src)} alt={work.alt} width={work.format === "phone" ? 582 : 1324} height="1000" loading="lazy" decoding="async" />
       <span className="case-card-zoom" aria-hidden="true">Ampliar</span>
     </button>)}
   </div>;
@@ -93,7 +93,7 @@ export default function CasesGallery({
         <button className="case-lightbox-close" type="button" onClick={() => setSelected(null)} autoFocus>
           <span>Cerrar</span><b aria-hidden="true">×</b>
         </button>
-        <img src={asset(selected.src)} alt={selected.alt} />
+        <img src={asset(selected.src)} alt={selected.alt} width={selected.format === "phone" ? 582 : 1324} height="1000" decoding="async" />
         <p>{selected.alt}</p>
       </div>
     </div>}

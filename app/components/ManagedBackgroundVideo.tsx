@@ -65,6 +65,7 @@ function shouldUsePosterOnly() {
 
 export default function ManagedBackgroundVideo({
   src,
+  poster,
   className,
   eager = false,
 }: ManagedBackgroundVideoProps) {
@@ -80,6 +81,10 @@ export default function ManagedBackgroundVideo({
     const posterOnly = shouldUsePosterOnly();
     const source = video.querySelector<HTMLSourceElement>("source[data-src]");
     let preloadObserver: IntersectionObserver | null = null;
+
+    const loadPosterOnce = () => {
+      if (poster && video.poster !== poster) video.poster = poster;
+    };
 
     const loadVideoOnce = () => {
       const deferredSrc = source?.dataset.src;
@@ -128,11 +133,13 @@ export default function ManagedBackgroundVideo({
     );
 
     if (eager) {
+      loadPosterOnce();
       loadVideoOnce();
-    } else if (!posterOnly) {
+    } else {
       preloadObserver = new IntersectionObserver(
         ([entry]) => {
           if (!entry.isIntersecting) return;
+          loadPosterOnce();
           loadVideoOnce();
           preloadObserver?.disconnect();
         },
@@ -156,7 +163,7 @@ export default function ManagedBackgroundVideo({
       window.removeEventListener("pagehide", pauseVideo);
       pauseVideo();
     };
-  }, [eager, src]);
+  }, [eager, poster, src]);
 
   return (
     <video
@@ -165,6 +172,7 @@ export default function ManagedBackgroundVideo({
       muted
       loop
       playsInline
+      poster={eager ? poster : undefined}
       preload={eager ? "metadata" : "none"}
       data-managed-background="true"
       aria-hidden="true"

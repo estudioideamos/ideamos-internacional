@@ -1,4 +1,5 @@
 import InternalPage, { ServicePage } from "../../components/InternalPage";
+import PageStructuredData from "../../components/PageStructuredData";
 import { createPageMetadata } from "../../lib/seo";
 
 export const metadata = createPageMetadata({
@@ -31,4 +32,12 @@ const page: ServicePage = {
     ]},
   ],
 };
-export default function Page(){ return <InternalPage page={page}/>; }
+export default function Page(){ return <>
+  <PageStructuredData
+    name="Diseño web profesional"
+    description="Diseñamos sitios web profesionales, administrables y orientados a resultados para atraer clientes, generar confianza y aumentar ventas."
+    path="/diseno-web-autoadministrable/"
+    serviceType="Diseño y desarrollo web"
+  />
+  <InternalPage page={page}/>
+</>; }

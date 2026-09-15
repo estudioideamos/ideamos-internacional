@@ -15,7 +15,7 @@ export default function TestimonialSection() {
       <h2>&quot;Notamos un cambio real: Más consultas, más movimiento y sobretodo, más ventas&quot;</h2>
       <div className="stars">★★★★★ <small>(5.0)</small></div>
       <div className="testimonial-person">
-        <img src={asset("/media/pablo-avila.png")} alt="Pablo Avila"/>
+        <img src={asset("/media/pablo-avila.png")} alt="Pablo Avila" width="150" height="150" loading="lazy" decoding="async"/>
         <div><b>Pablo Avila</b><small>Coordinador de CYL S.A.</small></div>
       </div>
       <a className="orange-cta" href={WHATSAPP_URL}>CHATEÁ CON UN EXPERTO</a>
@@ -23,7 +23,7 @@ export default function TestimonialSection() {
     <div className="testimonial-media">
       {playing
         ? <video autoPlay controls playsInline onPlay={() => pauseManagedBackgroundVideos()}><source src={asset("/media/testimonial.mp4")} type="video/mp4"/></video>
-        : <button className="video-cover" onClick={() => setPlaying(true)} aria-label="Reproducir testimonio"><img src={asset("/media/testimonial-cover.webp")} alt="Testimonio de Pablo Avila, CYL S.A."/><i>▶</i></button>}
+        : <button className="video-cover" onClick={() => setPlaying(true)} aria-label="Reproducir testimonio"><img src={asset("/media/testimonial-cover.webp")} alt="Testimonio de Pablo Avila, CYL S.A." width="960" height="720" loading="lazy" decoding="async"/><i>▶</i></button>}
     </div>
   </section>;
 }

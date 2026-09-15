@@ -35,6 +35,8 @@ const homeMetadata = createPageMetadata({
   path: "/",
 });
 
+const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   ...homeMetadata,
@@ -108,7 +110,7 @@ const structuredData = {
       "@id": `${SITE_URL}/#service`,
       name: "Ideamos",
       url: `${SITE_URL}/`,
-      image: `${SITE_URL}/og-precios.png`,
+      image: `${SITE_URL}/og-ideamos.jpg`,
       description: "Estudio de diseño web, ecommerce, marketing digital, SEO y Google Ads.",
       priceRange: "$$",
       telephone: "+54 9 11 6875-8285",
@@ -121,10 +123,11 @@ const structuredData = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es-AR">
       <head>
-        <link rel="preload" href="/fonts/Gilroy-ExtraBold.otf" as="font" type="font/otf" crossOrigin="anonymous" />
-        <link rel="describedby" href="/llms.txt" />
+        <link rel="preload" href={asset("/fonts/Gilroy-ExtraBold.otf")} as="font" type="font/otf" crossOrigin="anonymous" />
+        <link rel="preload" href={asset("/media/hero-poster.webp")} as="image" type="image/webp" fetchPriority="high" />
+        <link rel="describedby" href={asset("/llms.txt")} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -131,7 +131,7 @@ export default function InternalPage({ page }: { page: ServicePage }) {
             {section.actions && <Actions />}
           </header>
           <div className="service-visual-media">
-            <img src={asset("/media/xtreme-service.webp")} alt="Sitio web Xtreme desarrollado por Ideamos" loading="lazy" decoding="async" />
+            <img src={asset("/media/xtreme-service.webp")} alt="Sitio web Xtreme desarrollado por Ideamos" width="1300" height="987" loading="lazy" decoding="async" />
           </div>
         </section>
         {section.afterVideo && <section className="service-showcase-video" aria-label="Proyecto web desarrollado por Ideamos">
@@ -161,7 +161,7 @@ export default function InternalPage({ page }: { page: ServicePage }) {
               </article>)}
             </div>}
             <div className="design-phone-video design-phone-sequence">
-              <img src={asset(wildeFrames[wildeFrame])} alt="Tienda online Wilde visualizada en un teléfono" />
+              <img src={asset(wildeFrames[wildeFrame])} alt="Tienda online Wilde visualizada en un teléfono" width="525" height="1080" loading="lazy" decoding="async" />
             </div>
           </div>
           {section.actions && <Actions />}

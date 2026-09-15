@@ -60,6 +60,7 @@ export default function Home() {
         eager
         className="hero-video"
         src={asset("/media/hero.mp4")}
+        poster={asset("/media/hero-poster.webp")}
       />
       <div className="hero-overlay" /><div className="hero-aurora" />
       <HeroChrome />
@@ -92,7 +93,7 @@ export default function Home() {
             {["003", "002", "001"].map((name, index) => (
               <img
                 key={name}
-                src={asset(`/media/client-${name}.png`)}
+                src={asset(`/media/client-${name}.webp`)}
                 alt=""
                 width="326"
                 height="322"

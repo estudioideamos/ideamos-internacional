@@ -108,7 +108,7 @@ export default function PosicionamientoWebPage() {
         <div className="pw-benefit-list">{adsBenefits.map(([title, copy]) => <article key={title}><i/><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div>
         <Action>Chateá con un experto</Action>
       </div>
-      <div className="pw-phone" data-reveal><img src={asset("/media/posicionamiento-phone.png")} alt="Panel de rendimiento de campañas de Google Ads en un teléfono" /></div>
+      <div className="pw-phone" data-reveal><img src={asset("/media/posicionamiento-phone.webp")} alt="Panel de rendimiento de campañas de Google Ads en un teléfono" width="729" height="1251" loading="lazy" decoding="async" /></div>
     </section>
 
     <section className="pw-section pw-seo">
@@ -122,7 +122,7 @@ export default function PosicionamientoWebPage() {
           <div>Optimizamos tu sitio para los motores de búsqueda y para las personas: palabras clave relevantes, contenido de calidad, estructura técnica y autoridad. Los resultados requieren trabajo sostenido, pero sus beneficios son duraderos y no pagás por cada clic.</div>
           <Action>Chateá con un experto</Action>
         </div>
-        <div className="pw-tablet"><img src={asset("/media/posicionamiento-tablet.png")} alt="Tablet con panel de posicionamiento SEO en Google" /></div>
+        <div className="pw-tablet"><img src={asset("/media/posicionamiento-tablet.webp")} alt="Tablet con panel de posicionamiento SEO en Google" width="1312" height="932" loading="lazy" decoding="async" /></div>
       </div>
       <div className="pw-seo-benefits">
         <div className="pw-seo-summary" data-reveal><h2>Ventajas del<br/>posicionamiento SEO:</h2><p>Dominá los resultados de búsqueda, aumentá la visibilidad de tu negocio y generá más oportunidades sin depender de pagar por cada visita.</p><Action>Quiero asesoramiento</Action></div>
@@ -133,7 +133,7 @@ export default function PosicionamientoWebPage() {
     <section className="pw-section pw-maps">
       <div className="pw-maps-lead">
         <div className="pw-copy" data-reveal><p>BÚSQUEDAS LOCALES</p><h2>Google Mi Negocio:<br/><span>Aparecé en los mapas de Google y vendé más</span></h2><div>Google Mi Negocio te permite administrar y mejorar tu presencia en Google Maps y en las búsquedas locales. Te ayudamos a aprovechar la plataforma y destacarte frente a tu competencia.</div></div>
-        <div className="pw-maps-image"><img src={asset("/media/posicionamiento-maps.png")} alt="Teléfono con mapa de Google y marcador de ubicación" /></div>
+        <div className="pw-maps-image"><img src={asset("/media/posicionamiento-maps.webp")} alt="Teléfono con mapa de Google y marcador de ubicación" width="2048" height="1417" loading="lazy" decoding="async" /></div>
       </div>
       <div className="pw-maps-grid">{mapsServices.map(([title, copy]) => <article key={title}><i/><h3>{title}</h3><p>{copy}</p></article>)}</div>
       <div className="pw-center-action"><Action>Chateá con un experto</Action><Action>Quiero que me asesoren</Action></div>
