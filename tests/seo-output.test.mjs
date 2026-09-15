@@ -57,6 +57,11 @@ test("robots y archivos para agentes están publicados", async () => {
   await access(new URL("security.txt", out));
   await access(new URL(".well-known/security.txt", out));
   await access(new URL(".nojekyll", out));
+  const deployWorkflow = await readFile(
+    new URL("../.github/workflows/deploy-pages.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(deployWorkflow, /include-hidden-files:\s*true/);
   await access(new URL("public/googlecac1ad33023af32c.html", root));
 });
 
