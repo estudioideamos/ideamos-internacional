@@ -56,6 +56,7 @@ test("robots y archivos para agentes están publicados", async () => {
   assert.match(llms, /https:\/\/ideamos\.com\.ar\/llms-full\.txt/);
   await access(new URL("security.txt", out));
   await access(new URL(".well-known/security.txt", out));
+  await access(new URL(".nojekyll", out));
   await access(new URL("public/googlecac1ad33023af32c.html", root));
 });
 
