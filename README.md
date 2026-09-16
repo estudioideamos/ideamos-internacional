@@ -16,7 +16,7 @@ Sitio de [Ideamos Internacional](https://estudioideamos.com), desarrollado con N
 Requiere Node.js 22 o superior.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -78,3 +78,7 @@ No se deben subir manualmente `.next/`, `out/`, `node_modules/` ni archivos de v
 ## Autoría
 
 Diseño, estrategia y desarrollo por [Ideamos](https://ideamos.com.ar).
+
+## Colaboracion y soporte
+
+Ver [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) y la [configuracion del formulario](server/contact/README.md). Las consultas del sitio llegan a hola@estudioideamos.com.
