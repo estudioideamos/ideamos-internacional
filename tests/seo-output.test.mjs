@@ -179,3 +179,21 @@ test("el formulario conserva las defensas antispam", async () => {
   assert.match(source, /AbortController/);
   assert.match(source, /maxLength=\{2000\}/);
 });
+
+test("la configuración de cPanel conserva el endurecimiento del endpoint", async () => {
+  const htaccess = await readFile(new URL("server/contact/public.htaccess", root), "utf8");
+  const userIni = await readFile(new URL("server/contact/public.user.ini", root), "utf8");
+
+  assert.match(htaccess, /Options -Indexes/);
+  assert.match(htaccess, /Strict-Transport-Security/);
+  assert.match(htaccess, /Content-Security-Policy/);
+  assert.match(htaccess, /<LimitExcept GET POST OPTIONS>/);
+  assert.match(htaccess, /Require all denied/);
+
+  assert.match(userIni, /display_errors=Off/);
+  assert.match(userIni, /expose_php=Off/);
+  assert.match(userIni, /error_log=\.\.\/\.\.\/ideamos-contact\/php-error\.log/);
+  assert.match(userIni, /post_max_size=32K/);
+  assert.match(userIni, /session\.cookie_httponly=1/);
+  assert.match(userIni, /session\.cookie_secure=1/);
+});
