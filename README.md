@@ -9,7 +9,7 @@ Sitio de [Ideamos Internacional](https://estudioideamos.com), desarrollado con N
 - Exportación estática (`output: "export"`)
 - GitHub Actions + GitHub Pages
 - Dominio canónico: `https://estudioideamos.com`
-- Repositorio: `ideamosestudio/ideamos-internacional`
+- Repositorio: `estudioideamos/ideamos-internacional`
 
 ## Desarrollo local
 
