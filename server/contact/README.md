@@ -19,7 +19,7 @@ Nunca sobrescribir state.json al desplegar. No hay contrasenas SMTP en el codigo
 
 ## Controles
 
-Solo admite los origenes HTTPS estudioideamos.com y www.estudioideamos.com. Limites de campos, formato de email y telefono, bloqueo de inyeccion de cabeceras, honeypot y tiempo minimo. Limites persistentes con bloqueo de archivo: 1 intento por minuto, 5 por hora por IP y 100 globales por hora. Deduplicacion de envios aceptados durante 10 minutos. El estado guarda hashes, no los datos de la consulta.
+Solo admite los origenes HTTPS estudioideamos.com y www.estudioideamos.com. Antes de aceptar un POST emite un desafio firmado por el servidor, ligado a la IP, con 30 minutos de vigencia y uso unico; esto impide que un envio directo invente el tiempo del formulario. Tambien aplica limites de campos, formato de email y telefono, bloqueo de inyeccion de cabeceras, honeypot y tiempo minimo. Limites persistentes con bloqueo de archivo: 1 intento por minuto, 5 por hora por IP y 100 globales por hora. Deduplicacion de envios aceptados durante 10 minutos. El estado guarda una clave aleatoria local, hashes y marcas de tiempo, nunca los datos de la consulta.
 
 La respuesta exitosa indica aceptacion por el transporte local; no garantiza recepcion final. Se probaron validacion, rechazos, deduplicacion, limites y fallo de transporte sin enviar mensajes reales. La entrega a la casilla requiere una prueba real.
 Antispam adicional: limites por hash de email incluso al cambiar de IP; deduplicacion normalizada de espacios y mayusculas; maximo cinco enlaces por consulta. No hay listas de palabras ni bloqueos por pais. SpamAssassin y greylisting requieren habilitacion del proveedor: deshabilitados en el servidor al 16/09/2026.
