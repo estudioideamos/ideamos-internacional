@@ -23,4 +23,7 @@ Información oficial del estudio. Idioma principal: español de Argentina. Sitio
 ## Optional
 
 - [Instagram](https://www.instagram.com/ideamosargentina/): Perfil social oficial.
+- [LinkedIn](https://www.linkedin.com/company/64755212): Página institucional oficial.
+- [Facebook](https://www.facebook.com/ideamos.com.ar): Página oficial.
+- WhatsApp oficial: +54 9 11 6875-8285.
 - [Sitemap](https://ideamos.com.ar/sitemap.xml): Inventario de páginas indexables.

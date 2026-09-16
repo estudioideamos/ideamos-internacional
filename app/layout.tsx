@@ -93,7 +93,11 @@ const structuredData = {
       logo: `${SITE_URL}/logos/ideamos-light.webp`,
       email: "hola@ideamos.com.ar",
       telephone: "+54 9 11 6875-8285",
-      sameAs: ["https://www.instagram.com/ideamosargentina/"],
+      sameAs: [
+        "https://www.instagram.com/ideamosargentina/",
+        "https://www.linkedin.com/company/64755212",
+        "https://www.facebook.com/ideamos.com.ar",
+      ],
       address: { "@type": "PostalAddress", addressLocality: "Buenos Aires", addressCountry: "AR" },
       areaServed: ["Argentina", "Uruguay", "España", "Estados Unidos", "México"],
     },

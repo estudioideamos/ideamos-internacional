@@ -33,6 +33,8 @@ test("la portada acredita a Ideamos y expone datos estructurados", async () => {
   assert.match(html, /application\/ld\+json/i);
   assert.match(html, /https:\/\/schema\.org/i);
   assert.match(html, /rel="describedby" href="\/llms\.txt"/i);
+  assert.match(html, /https:\/\/www\.linkedin\.com\/company\/64755212/);
+  assert.match(html, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
 });
 
 test("sitemap profesional: solo páginas públicas y prioridades válidas", async () => {
@@ -54,6 +56,8 @@ test("robots y archivos para agentes están publicados", async () => {
   assert.match(robots, /PerplexityBot/);
   assert.match(llms, /^# Ideamos/m);
   assert.match(llms, /https:\/\/ideamos\.com\.ar\/llms-full\.txt/);
+  assert.match(llms, /https:\/\/www\.linkedin\.com\/company\/64755212/);
+  assert.match(llms, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
   await access(new URL("security.txt", out));
   await access(new URL(".well-known/security.txt", out));
   await access(new URL(".nojekyll", out));
@@ -86,6 +90,17 @@ test("la portada conserva las optimizaciones críticas de rendimiento", async ()
     assert.match(image, /\bheight=/, image);
   }
   assert.ok(stylesheets.length <= 2, `La portada carga ${stylesheets.length} hojas de estilo`);
+});
+
+test("el contacto publica las redes oficiales con iconos accesibles", async () => {
+  const html = await readFile(new URL("contacto/index.html", out), "utf8");
+
+  assert.match(html, /aria-label="Ideamos en LinkedIn"/);
+  assert.match(html, /aria-label="Ideamos en Instagram"/);
+  assert.match(html, /aria-label="Contactar a Ideamos por WhatsApp"/);
+  assert.match(html, /aria-label="Ideamos en Facebook"/);
+  assert.match(html, /https:\/\/www\.linkedin\.com\/company\/64755212/);
+  assert.match(html, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
 });
 
 test("el presupuesto de rendimiento evita regresiones pesadas", async () => {
