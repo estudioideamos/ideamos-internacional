@@ -29,6 +29,16 @@ try {
     check(\IdeamosContact\handle($server,$post,[],$transport,$state),200,'duplicate suppressed');
     if ($count !== 1) throw new RuntimeException('Duplicate sent');
     check(\IdeamosContact\handle($server,array_replace($post,['nombre'=>'Otra persona']),[],$transport,$state),429,'rate limit');
+    check(\IdeamosContact\handle($server,array_replace($post,['mensaje'=>str_repeat('https://example.com ',6)]),[],$transport,$state),422,'bulk links rejected');
+    check(\IdeamosContact\handle(array_replace($server,['REMOTE_ADDR'=>'192.0.2.2']),array_replace($post,['nombre'=>'Otra persona']),[],$transport,$state),429,'email limit across IP addresses');
+    check(\IdeamosContact\handle($server,array_replace($post,['nombre'=>' PRUEBA ','mensaje'=>'Prueba del formulario   sin envio de correo.']),[],$transport,$state),200,'normalized duplicate suppressed');
+    if ($count !== 1) throw new RuntimeException('Spam checks delivered mail');
+    $attempts = [];
+    for ($i=0;$i<5;$i++) $attempts[]=['at'=>time()-120-$i,'ip'=>hash('sha256','192.0.2.'.($i+10)),'email'=>hash('sha256','visitor@example.com')];
+    file_put_contents($state,json_encode(['attempts'=>$attempts,'sent'=>[]]));
+    check(\IdeamosContact\handle($server,$post,[],$transport,$state),429,'hourly email limit across IP addresses');
+    file_put_contents($state,'');
+    check(\IdeamosContact\handle($server,array_replace($post,['mensaje'=>$post['mensaje'].' https://example.com']),[],static fn()=>true,$state),200,'legitimate reference link allowed');
     file_put_contents($state,'');
     check(\IdeamosContact\handle($server,$post,[],static fn()=>false,$state),503,'transport failure');
     if ($count !== 1) throw new RuntimeException('Unexpected delivery');
