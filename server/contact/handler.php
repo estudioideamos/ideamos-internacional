@@ -43,9 +43,15 @@ function handle(array $server, array $post, array $files, callable $deliver, str
     if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) || !preg_match('/^[0-9+() -]{8,30}$/D', $data['telefono'])) {
         return $reply(422, 'Revisa el email y el telefono.');
     }
+    // A project brief can include links, but link-heavy bulk advertisements are rejected.
+    if (preg_match_all('~(?:https?://|www\.)~i', implode(' ', $data)) > 5) {
+        return $reply(422, 'Inclui como maximo cinco enlaces en tu consulta.');
+    }
+    $emailKey = hash('sha256', strtolower($data['email']));
+    $normalized = array_map(static fn($value) => strtolower(preg_replace('/\s+/u', ' ', trim($value))), $data);
     $now = time();
     $ip = hash('sha256', $server['REMOTE_ADDR'] ?? 'unknown');
-    $fingerprint = hash('sha256', json_encode($data));
+    $fingerprint = hash('sha256', json_encode($normalized));
     $lock = @fopen($stateFile, 'c+');
     if (!$lock || !flock($lock, LOCK_EX)) {
         if (is_resource($lock)) fclose($lock);
@@ -58,12 +64,13 @@ function handle(array $server, array $post, array $files, callable $deliver, str
         $state['sent'] = array_filter($state['sent'] ?? [], static fn($at) => $at > $now - 600);
         if (isset($state['sent'][$fingerprint])) return $reply(200, 'Esta consulta ya fue enviada.', true);
         $byIp = array_filter($state['attempts'], static fn($r) => $r['ip'] === $ip);
-        $recent = array_filter($byIp, static fn($r) => $r['at'] > $now - 60);
-        if (count($state['attempts']) >= 100 || count($byIp) >= 5 || $recent) {
+        $byEmail = array_filter($state['attempts'], static fn($r) => ($r['email'] ?? '') === $emailKey);
+        $recent = array_filter(array_merge($byIp, $byEmail), static fn($r) => $r['at'] > $now - 60);
+        if (count($state['attempts']) >= 100 || count($byIp) >= 5 || count($byEmail) >= 5 || $recent) {
             $headers['Retry-After'] = '60';
             return $reply(429, 'Espera antes de enviar otra consulta.');
         }
-        $state['attempts'][] = ['at' => $now, 'ip' => $ip];
+        $state['attempts'][] = ['at' => $now, 'ip' => $ip, 'email' => $emailKey];
         // Persist the attempt before delivery; failures cannot bypass rate limiting.
         $persist = static function () use ($lock, &$state): void {
             $json = json_encode($state, JSON_THROW_ON_ERROR);
