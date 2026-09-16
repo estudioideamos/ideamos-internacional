@@ -5,6 +5,14 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const out = new URL("../out/", import.meta.url);
 
+function hasExactUrl(text, expected) {
+  const expectedUrl = new URL(expected).href;
+  return [...text.matchAll(/https?:\/\/[^\s"'<>\\)]+/g)].some(([value]) => {
+    try { return new URL(value).href === expectedUrl; }
+    catch { return false; }
+  });
+}
+
 const pagePaths = [
   ["index.html", "https://estudioideamos.com/"],
   ["diseno-web-autoadministrable/index.html", "https://estudioideamos.com/diseno-web-autoadministrable/"],
@@ -31,10 +39,10 @@ test("la portada acredita a Ideamos y expone datos estructurados", async () => {
   assert.match(html, /name="author" content="Ideamos"/i);
   assert.match(html, /name="developed-by" content="Ideamos — https:\/\/ideamos\.com\.ar"/i);
   assert.match(html, /application\/ld\+json/i);
-  assert.match(html, /https:\/\/schema\.org/i);
+  assert.ok(hasExactUrl(html, "https://schema.org"));
   assert.match(html, /rel="describedby" href="\/llms\.txt"/i);
-  assert.match(html, /https:\/\/www\.linkedin\.com\/company\/64755212/);
-  assert.match(html, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
+  assert.ok(hasExactUrl(html, "https://www.linkedin.com/company/64755212"));
+  assert.ok(hasExactUrl(html, "https://www.facebook.com/ideamos.com.ar"));
 });
 
 test("sitemap profesional: solo páginas públicas y prioridades válidas", async () => {
@@ -55,9 +63,9 @@ test("robots y archivos para agentes están publicados", async () => {
   assert.match(robots, /ClaudeBot/);
   assert.match(robots, /PerplexityBot/);
   assert.match(llms, /^# Ideamos/m);
-  assert.match(llms, /https:\/\/estudioideamos\.com\/llms-full\.txt/);
-  assert.match(llms, /https:\/\/www\.linkedin\.com\/company\/64755212/);
-  assert.match(llms, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
+  assert.ok(hasExactUrl(llms, "https://estudioideamos.com/llms-full.txt"));
+  assert.ok(hasExactUrl(llms, "https://www.linkedin.com/company/64755212"));
+  assert.ok(hasExactUrl(llms, "https://www.facebook.com/ideamos.com.ar"));
   await access(new URL("security.txt", out));
   await access(new URL(".well-known/security.txt", out));
   await access(new URL(".nojekyll", out));
@@ -73,7 +81,8 @@ test("la portada conserva las optimizaciones críticas de rendimiento", async ()
   const html = await readFile(new URL("index.html", out), "utf8");
   const stylesheets = html.match(/<link rel="stylesheet"/g) ?? [];
 
-  assert.ok(!html.includes("fonts.googleapis.com"));
+  const resources = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map(([, value]) => new URL(value, "https://estudioideamos.com"));
+  assert.ok(resources.every((url) => url.hostname !== "fonts.googleapis.com"));
   assert.ok(!html.includes('<script src="https://www.googletagmanager.com/gtag'));
   for (const prefix of ["", "shop-", "frosz-"]) {
     for (const number of [1, 2, 3]) {
@@ -100,8 +109,8 @@ test("el contacto publica las redes oficiales con iconos accesibles", async () =
   assert.match(html, /aria-label="Ideamos en Instagram"/);
   assert.match(html, /aria-label="Contactar a Ideamos por WhatsApp"/);
   assert.match(html, /aria-label="Ideamos en Facebook"/);
-  assert.match(html, /https:\/\/www\.linkedin\.com\/company\/64755212/);
-  assert.match(html, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
+  assert.ok(hasExactUrl(html, "https://www.linkedin.com/company/64755212"));
+  assert.ok(hasExactUrl(html, "https://www.facebook.com/ideamos.com.ar"));
 });
 
 test("el presupuesto de rendimiento evita regresiones pesadas", async () => {
