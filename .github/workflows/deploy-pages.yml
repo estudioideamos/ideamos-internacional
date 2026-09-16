@@ -33,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cname="$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.cname // ""')"
-          if [[ "$cname" == "ideamos.com.ar" ]]; then
+          if [[ -n "$cname" ]]; then
             echo "base_path=" >> "$GITHUB_OUTPUT"
           else
             echo "base_path=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_OUTPUT"

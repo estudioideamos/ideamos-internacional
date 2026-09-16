@@ -1,9 +1,9 @@
 {
-  "name": "ideamos-web",
+  "name": "ideamos-internacional",
   "version": "1.0.0",
   "private": true,
-  "description": "Sitio institucional de Ideamos, publicado con Next.js y GitHub Pages.",
-  "homepage": "https://ideamos.com.ar",
+  "description": "Sitio internacional de Ideamos, publicado con Next.js y GitHub Pages.",
+  "homepage": "https://estudioideamos.com",
   "author": {
     "name": "Ideamos",
     "url": "https://ideamos.com.ar"

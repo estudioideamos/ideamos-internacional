@@ -6,15 +6,15 @@ const root = new URL("../", import.meta.url);
 const out = new URL("../out/", import.meta.url);
 
 const pagePaths = [
-  ["index.html", "https://ideamos.com.ar/"],
-  ["diseno-web-autoadministrable/index.html", "https://ideamos.com.ar/diseno-web-autoadministrable/"],
-  ["tiendas-online/index.html", "https://ideamos.com.ar/tiendas-online/"],
-  ["marketing-digital/index.html", "https://ideamos.com.ar/marketing-digital/"],
-  ["posicionamiento-web/index.html", "https://ideamos.com.ar/posicionamiento-web/"],
-  ["casos-de-exito/index.html", "https://ideamos.com.ar/casos-de-exito/"],
-  ["testimonios/index.html", "https://ideamos.com.ar/testimonios/"],
-  ["precios/index.html", "https://ideamos.com.ar/precios/"],
-  ["contacto/index.html", "https://ideamos.com.ar/contacto/"],
+  ["index.html", "https://estudioideamos.com/"],
+  ["diseno-web-autoadministrable/index.html", "https://estudioideamos.com/diseno-web-autoadministrable/"],
+  ["tiendas-online/index.html", "https://estudioideamos.com/tiendas-online/"],
+  ["marketing-digital/index.html", "https://estudioideamos.com/marketing-digital/"],
+  ["posicionamiento-web/index.html", "https://estudioideamos.com/posicionamiento-web/"],
+  ["casos-de-exito/index.html", "https://estudioideamos.com/casos-de-exito/"],
+  ["testimonios/index.html", "https://estudioideamos.com/testimonios/"],
+  ["precios/index.html", "https://estudioideamos.com/precios/"],
+  ["contacto/index.html", "https://estudioideamos.com/contacto/"],
 ];
 
 test("cada página pública tiene título, descripción y canonical", async () => {
@@ -50,12 +50,12 @@ test("robots y archivos para agentes están publicados", async () => {
   const robots = await readFile(new URL("robots.txt", out), "utf8");
   const llms = await readFile(new URL("llms.txt", out), "utf8");
   assert.match(robots, /Allow: \//);
-  assert.match(robots, /Sitemap: https:\/\/ideamos\.com\.ar\/sitemap\.xml/);
+  assert.match(robots, /Sitemap: https:\/\/estudioideamos\.com\/sitemap\.xml/);
   assert.match(robots, /OAI-SearchBot/);
   assert.match(robots, /ClaudeBot/);
   assert.match(robots, /PerplexityBot/);
   assert.match(llms, /^# Ideamos/m);
-  assert.match(llms, /https:\/\/ideamos\.com\.ar\/llms-full\.txt/);
+  assert.match(llms, /https:\/\/estudioideamos\.com\/llms-full\.txt/);
   assert.match(llms, /https:\/\/www\.linkedin\.com\/company\/64755212/);
   assert.match(llms, /https:\/\/www\.facebook\.com\/ideamos\.com\.ar/);
   await access(new URL("security.txt", out));
@@ -84,6 +84,7 @@ test("la portada conserva las optimizaciones críticas de rendimiento", async ()
   assert.ok(html.includes('rel="preload" href="/fonts/Gilroy-ExtraBold.otf"'));
   assert.ok(html.includes('rel="preload" href="/media/hero-poster.webp"'));
   assert.ok(html.includes('poster="/media/hero-poster.webp"'));
+  assert.ok(html.includes('rel="icon" href="/favicon.jpg"'));
   assert.ok(html.includes("/media/client-001.webp"));
   for (const image of html.match(/<img\b[^>]*>/g) ?? []) {
     assert.match(image, /\bwidth=/, image);

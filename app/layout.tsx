@@ -30,8 +30,8 @@ import "./mobile-layout-request-2026-09-02.css";
 import "./desktop-button-typography.css";
 
 const homeMetadata = createPageMetadata({
-  title: "Diseño web y marketing digital | Ideamos",
-  description: "Diseñamos sitios web, tiendas online y estrategias de marketing digital para atraer clientes, generar confianza y aumentar tus ventas.",
+  title: "Diseño web y marketing digital internacional | Ideamos",
+  description: "Diseñamos sitios web, tiendas online y estrategias de marketing digital para empresas de Argentina y el mundo que buscan atraer clientes y aumentar sus ventas.",
   path: "/",
 });
 
@@ -40,8 +40,8 @@ const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${pat
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   ...homeMetadata,
-  applicationName: "Ideamos",
-  authors: [{ name: "Ideamos", url: SITE_URL }],
+  applicationName: "Ideamos Internacional",
+  authors: [{ name: "Ideamos", url: "https://ideamos.com.ar" }],
   creator: "Ideamos",
   publisher: "Ideamos",
   generator: "Ideamos — Next.js",
@@ -67,7 +67,11 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: { icon: "/favicon.jpg", shortcut: "/favicon.jpg", apple: "/favicon.jpg" },
+  icons: {
+    icon: asset("/favicon.jpg"),
+    shortcut: asset("/favicon.jpg"),
+    apple: asset("/favicon.jpg"),
+  },
   other: {
     "llms-txt": `${SITE_URL}/llms.txt`,
     "developed-by": "Ideamos — https://ideamos.com.ar",
@@ -88,7 +92,7 @@ const structuredData = {
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Ideamos",
+      name: "Ideamos Internacional",
       url: `${SITE_URL}/`,
       logo: `${SITE_URL}/logos/ideamos-light.webp`,
       email: "hola@ideamos.com.ar",
@@ -105,14 +109,14 @@ const structuredData = {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
-      name: "Ideamos",
+      name: "Ideamos Internacional",
       inLanguage: "es-AR",
       publisher: { "@id": `${SITE_URL}/#organization` },
     },
     {
       "@type": "ProfessionalService",
       "@id": `${SITE_URL}/#service`,
-      name: "Ideamos",
+      name: "Ideamos Internacional",
       url: `${SITE_URL}/`,
       image: `${SITE_URL}/og-ideamos.jpg`,
       description: "Estudio de diseño web, ecommerce, marketing digital, SEO y Google Ads.",
