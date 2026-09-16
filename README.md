@@ -55,6 +55,9 @@ Los títulos, descripciones, datos sociales y URLs canónicas se generan desde `
 
 - Las capturas del sitio se publican en WebP y con dimensiones explícitas.
 - El video decorativo principal usa un poster WebP inmediato y se reserva para escritorio; en móvil se prioriza el contenido.
+- Las animaciones automáticas se publican sin audio y con un presupuesto de peso cubierto por pruebas.
+- La portada es estática y delega solo las galerías, menú, videos y controles necesarios a componentes interactivos.
+- El proyecto usa CSS propio con un reset mínimo; no incorpora Tailwind ni su cadena de compilación.
 - Google Analytics se carga tras la primera interacción o cuando la página queda inactiva.
 - Las fuentes externas no deben agregarse a la ruta crítica.
 

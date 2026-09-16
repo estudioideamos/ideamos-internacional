@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -86,6 +86,31 @@ test("la portada conserva las optimizaciones críticas de rendimiento", async ()
     assert.match(image, /\bheight=/, image);
   }
   assert.ok(stylesheets.length <= 2, `La portada carga ${stylesheets.length} hojas de estilo`);
+});
+
+test("el presupuesto de rendimiento evita regresiones pesadas", async () => {
+  const homeSource = await readFile(new URL("app/page.tsx", root), "utf8");
+  const rootLayout = await readFile(new URL("app/layout.tsx", root), "utf8");
+  const packageJson = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
+  const videoLimits = {
+    "public/media/video-wall-background-2026.webm": 1_500_000,
+    "public/media/tablet-animated-final.webm": 700_000,
+    "public/media/videollamada-final.webm": 400_000,
+    "public/media/marketing-wilde.webm": 450_000,
+    "public/media/posicionamiento-video-ads.mp4": 900_000,
+  };
+
+  assert.doesNotMatch(homeSource, /^"use client"/);
+  assert.equal(packageJson.dependencies?.tailwindcss, undefined);
+  assert.equal(packageJson.devDependencies?.tailwindcss, undefined);
+  assert.equal(packageJson.devDependencies?.["@tailwindcss/postcss"], undefined);
+  assert.match(rootLayout, /casos-de-exito\/casos\.css/);
+  assert.match(rootLayout, /DriftWall\.css/);
+
+  for (const [file, maximumBytes] of Object.entries(videoLimits)) {
+    const details = await stat(new URL(file, root));
+    assert.ok(details.size <= maximumBytes, `${file} pesa ${details.size} bytes`);
+  }
 });
 
 test("las páginas internas publican schema específico y breadcrumbs", async () => {

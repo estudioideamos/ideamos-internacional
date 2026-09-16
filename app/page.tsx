@@ -1,12 +1,16 @@
-"use client";
-
-import { useEffect, useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import ManagedBackgroundVideo from "./components/ManagedBackgroundVideo";
 import { HeroChrome, HeroLogoTrack, HomeAdvisorySection, HomeClosingSections } from "../components/SharedHomeSections";
 import SiteHeader from "../components/SiteHeader";
 import PortfolioDriftWall from "../components/PortfolioDriftWall";
 import LightGridFrame from "../components/LightGridFrame";
 import HomeTestimonials from "../components/HomeTestimonials";
+import {
+  GoogleScreenRotator,
+  HomeEnhancements,
+  ShopScreenRotator,
+  WebScreenRotator,
+} from "../components/HomeClientEnhancements";
 import { WHATSAPP_URL } from "../lib/whatsapp";
 
 const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
@@ -24,35 +28,8 @@ const ecommerceRight = [
 ];
 
 export default function Home() {
-  const [webScreen, setWebScreen] = useState(0);
-  const [shopScreen, setShopScreen] = useState(0);
-  const [googleScreen, setGoogleScreen] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => document.documentElement.style.setProperty("--scroll", String(window.scrollY));
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setWebScreen((value) => (value + 1) % 3);
-      setShopScreen((value) => (value + 1) % 3);
-      setGoogleScreen((value) => (value + 1) % 3);
-    }, 2200);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-      if (entry.isIntersecting) entry.target.classList.add("in-view");
-    }), { threshold: .12 });
-    document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return <main className="home-page">
+    <HomeEnhancements />
     <SiteHeader />
 
     <section className="hero" id="inicio">
@@ -116,20 +93,14 @@ export default function Home() {
         </p>
         <a className="orange-cta" href={WHATSAPP_URL}><span className="desktop-only">CHARLEMOS DE TU PROYECTO</span><span className="mobile-only">Contactanos</span></a>
       </div>
-      <div className="screen-swap" data-reveal>
-        {[1,2,3].map((n, index) => <div key={n} className={`screen-frame ${webScreen === index ? "active" : ""}`}><img src={asset(`/media/screen-${n}.webp`)} alt={`Proyecto web ${n}`} width="700" height="531" loading="lazy" decoding="async" /></div>)}
-        <div className="screen-dots">{[0,1,2].map((n) => <button key={n} className={webScreen === n ? "active" : ""} onClick={() => setWebScreen(n)} aria-label={`Ver pantalla ${n + 1} de diseño web`} />)}</div>
-      </div>
+      <WebScreenRotator />
     </section>
 
     <section className="ecommerce white-section shared-section-bg" id="tiendas">
       <div className="section-heading" data-reveal><p>ECOMMERCE ESTRATÉGICO</p><h2>¿Necesitás una tienda online para automatizar tus ventas?</h2><span><b>Automatizá tus ventas</b> con una <b>tienda diseñada para convertir</b>: estrategia, procesos simples y <b>tecnología que trabaja por vos.</b> Es escalable, segura y pensada para crecer con tu negocio.</span></div>
       <div className="shop-layout">
         <div className="shop-column">{ecommerceLeft.map(([title, copy]) => <article key={title} data-reveal><i/><h3>{title}</h3><p>{copy}</p></article>)}</div>
-        <div className="phone-stage phone-swap">
-          {[1,2,3].map((number, index) => <img key={number} className={shopScreen === index ? "active" : ""} src={asset(`/media/shop-screen-${number}.webp`)} alt={`Pantalla ${number} de tienda online desarrollada por Ideamos`} width="460" height="927" loading="lazy" decoding="async"/>)}
-          <div className="screen-dots">{[0,1,2].map((n) => <button key={n} className={shopScreen === n ? "active" : ""} onClick={() => setShopScreen(n)} aria-label={`Ver pantalla ${n + 1} de tienda online`} />)}</div>
-        </div>
+        <ShopScreenRotator />
         <div className="shop-column">{ecommerceRight.map(([title, copy]) => <article key={title} data-reveal><i/><h3>{title}</h3><p>{copy}</p></article>)}</div>
       </div>
       <div className="ecommerce-actions"><a className="cta-glow primary" href={WHATSAPP_URL}><span className="desktop-only">Quiero una tienda online</span><span className="mobile-only">Contactanos</span></a><a className="cta-glow secondary" href={WHATSAPP_URL}><span className="desktop-only">Quiero hablar con un experto</span><span className="mobile-only">Contacta un experto</span></a></div>
@@ -143,22 +114,7 @@ export default function Home() {
         <p className="body-copy"><b>Traemos a tu web personas que ya buscan lo que ofrecés</b> y las convertimos en consultas. Con Google Ads te mostramos primero cuando te buscan y las llevamos a contactarte. Con posicionamiento en Google hacemos que te encuentren sin pagar cada clic. Medimos llamadas y mensajes para invertir donde rinde más.</p>
         <a className="orange-cta" href={WHATSAPP_URL}><span className="desktop-only">QUIERO ESTAR PRIMERO EN GOOGLE</span><span className="mobile-only">Contactanos</span></a>
       </div>
-          <div className="google-visual google-swap" aria-label="Proyecto web FroSZ">
-            {[1, 2, 3].map((item, index) => (
-              <img
-                key={item}
-                className={googleScreen === index ? "active" : ""}
-                src={asset(`/media/frosz-screen-${item}.webp`)}
-                alt={index === 0 ? "Proyecto web FroSZ desarrollado por Ideamos" : ""}
-                width="700"
-                height="495"
-                aria-hidden={index !== 0}
-                loading="lazy"
-                decoding="async"
-              />
-            ))}
-            <div className="screen-dots">{[0,1,2].map((n) => <button key={n} className={googleScreen === n ? "active" : ""} onClick={() => setGoogleScreen(n)} aria-label={`Ver pantalla ${n + 1} de posicionamiento`} />)}</div>
-          </div>
+      <GoogleScreenRotator />
     </section>
     </LightGridFrame>
 
