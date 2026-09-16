@@ -15,7 +15,7 @@ const page: ServicePage = {
   sectionCopy:"Coordinamos una charla para entender tu negocio, sus desafíos y objetivos. Después te proponemos acciones concretas y una solución a medida.",
   items:[
     ["WhatsApp","+54 9 11 6875-8285"],
-    ["Email","hola@ideamos.com.ar"],
+    ["Email","hola@estudioideamos.com"],
     ["Instagram","@ideamosargentina"],
     ["Dónde trabajamos","Argentina, Uruguay, España, Estados Unidos y México."],
   ],

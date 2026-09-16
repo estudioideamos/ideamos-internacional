@@ -95,7 +95,7 @@ const structuredData = {
       name: "Ideamos Internacional",
       url: `${SITE_URL}/`,
       logo: `${SITE_URL}/logos/ideamos-light.webp`,
-      email: "hola@ideamos.com.ar",
+      email: "hola@estudioideamos.com",
       telephone: "+54 9 11 6875-8285",
       sameAs: [
         "https://www.instagram.com/ideamosargentina/",
@@ -122,7 +122,7 @@ const structuredData = {
       description: "Estudio de diseño web, ecommerce, marketing digital, SEO y Google Ads.",
       priceRange: "$$",
       telephone: "+54 9 11 6875-8285",
-      email: "hola@ideamos.com.ar",
+      email: "hola@estudioideamos.com",
       address: { "@type": "PostalAddress", addressLocality: "Buenos Aires", addressCountry: "AR" },
       parentOrganization: { "@id": `${SITE_URL}/#organization` },
     },

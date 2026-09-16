@@ -2,11 +2,11 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-const FORM_ENDPOINT = "https://mailer.ideamos.com.ar/send.php";
+const FORM_ENDPOINT = "https://mail.estudioideamos.com/contact/send.php";
 const MIN_COMPLETION_TIME_MS = 2_500;
 const SUBMISSION_COOLDOWN_MS = 60_000;
 const DUPLICATE_WINDOW_MS = 10 * 60_000;
-const SUBMISSION_STORAGE_KEY = "ideamos.contact.recent-submission";
+const SUBMISSION_STORAGE_KEY = "ideamos.internacional.contact.recent-submission";
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 type RecentSubmission = { fingerprint: string; submittedAt: number };
@@ -114,7 +114,8 @@ export default function ContactLeadForm() {
         signal: controller.signal,
       });
 
-      if (!response.ok) throw new Error("Form submission failed");
+      const result = await response.json();
+      if (!response.ok || result.ok !== true) throw new Error("Form submission failed");
       saveRecentSubmission({ fingerprint: payloadFingerprint, submittedAt: Date.now() });
       form.reset();
       startedAt.current = Date.now();
@@ -134,7 +135,7 @@ export default function ContactLeadForm() {
     onSubmit={handleSubmit}
     aria-busy={status === "sending"}
   >
-    <input type="hidden" name="origen" value="Sitio web Ideamos" />
+    <input type="hidden" name="origen" value="Sitio web Ideamos Internacional" />
     <label className="contact-honeypot" aria-hidden="true">
       No completar
       <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" />

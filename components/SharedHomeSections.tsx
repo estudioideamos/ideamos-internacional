@@ -103,7 +103,7 @@ export function HomeClosingSections({ showAdvisory = true, darkGrid = false }: {
         <span>ESTAMOS PARA AYUDARTE</span>
         <h3><span className="contact-greeting">Hola. </span>Conversemos sobre lo que querés lograr.</h3>
         <a href="tel:+5491168758285"><i><ContactIcon name="phone" /></i><div><small>Teléfono</small><b>+54 9 11 6875-8285</b></div></a>
-        <a href="mailto:hola@ideamos.com.ar"><i><ContactIcon name="email" /></i><div><small>Email</small><b>hola@ideamos.com.ar</b></div></a>
+        <a href="mailto:hola@estudioideamos.com"><i><ContactIcon name="email" /></i><div><small>Email</small><b>hola@estudioideamos.com</b></div></a>
         <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><i><ContactIcon name="whatsapp" /></i><div><small>WhatsApp</small><b>Escribinos ahora</b></div></a>
         <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer"><i><ContactIcon name="instagram" /></i><div><small>Instagram</small><b>@ideamosargentina</b></div></a>
         <div className="contact-social">
@@ -134,7 +134,7 @@ export function HomeClosingSections({ showAdvisory = true, darkGrid = false }: {
           <div>
             <b>Contacto</b>
             <a href={WHATSAPP_URL}>+54 9 11 6875-8285</a>
-            <a href="mailto:hola@ideamos.com.ar">hola@ideamos.com.ar</a>
+            <a href="mailto:hola@estudioideamos.com">hola@estudioideamos.com</a>
             <p>Buenos Aires, Argentina</p>
           </div>
         </div>
