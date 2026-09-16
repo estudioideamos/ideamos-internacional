@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
 const FORM_ENDPOINT = "https://mail.estudioideamos.com/contact/send.php";
 const MIN_COMPLETION_TIME_MS = 2_500;
@@ -10,6 +10,7 @@ const SUBMISSION_STORAGE_KEY = "ideamos.internacional.contact.recent-submission"
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 type RecentSubmission = { fingerprint: string; submittedAt: number };
+type ChallengeResponse = { ok?: boolean; challenge?: string };
 
 function fingerprint(value: string) {
   let hash = 2166136261;
@@ -43,11 +44,36 @@ function saveRecentSubmission(submission: RecentSubmission) {
 export default function ContactLeadForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [feedback, setFeedback] = useState("");
+  const [challenge, setChallenge] = useState("");
   const startedAt = useRef(0);
 
-  useEffect(() => {
-    startedAt.current = Date.now();
+  const requestChallenge = useCallback(async (signal?: AbortSignal) => {
+    try {
+      const response = await fetch(`${FORM_ENDPOINT}?challenge=1`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        credentials: "omit",
+        signal,
+      });
+      const result = await response.json() as ChallengeResponse;
+      if (!response.ok || result.ok !== true || typeof result.challenge !== "string") return false;
+      setChallenge(result.challenge);
+      startedAt.current = Date.now();
+      return true;
+    } catch {
+      return false;
+    }
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => void requestChallenge(controller.signal), 0);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [requestChallenge]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -79,6 +105,13 @@ export default function ContactLeadForm() {
       return;
     }
 
+    if (!challenge) {
+      setStatus("error");
+      setFeedback("Estamos actualizando la protección del formulario. Esperá unos segundos y volvé a intentar.");
+      void requestChallenge();
+      return;
+    }
+
     const payload = ["nombre", "empresa", "email", "telefono", "mensaje"]
       .map((field) => String(formData.get(field) ?? "").trim().toLowerCase())
       .join("\u001f");
@@ -100,6 +133,7 @@ export default function ContactLeadForm() {
 
     formData.set("_form_started_at", String(startedAt.current));
     formData.set("_form_elapsed_ms", String(elapsed));
+    formData.set("_form_challenge", challenge);
     formData.set("_page_url", window.location.href);
     setStatus("sending");
     setFeedback("");
@@ -118,10 +152,13 @@ export default function ContactLeadForm() {
       if (!response.ok || result.ok !== true) throw new Error("Form submission failed");
       saveRecentSubmission({ fingerprint: payloadFingerprint, submittedAt: Date.now() });
       form.reset();
-      startedAt.current = Date.now();
+      setChallenge("");
+      void requestChallenge();
       setStatus("success");
       setFeedback("¡Gracias! Recibimos tu consulta y te responderemos a la brevedad.");
     } catch {
+      setChallenge("");
+      void requestChallenge();
       setStatus("error");
       setFeedback("No pudimos enviar la consulta. Intentá nuevamente o escribinos por WhatsApp.");
     } finally {

@@ -10,20 +10,55 @@ function handle(array $server, array $post, array $files, callable $deliver, str
     $reply = static function (int $status, string $message, bool $ok = false) use (&$headers): array {
         return ['status' => $status, 'headers' => $headers, 'body' => ['ok' => $ok, 'message' => $message]];
     };
+    $now = (int)($server['REQUEST_TIME'] ?? time());
     if (!in_array($origin, ['https://estudioideamos.com', 'https://www.estudioideamos.com'], true)) {
         return $reply(403, 'Origen no permitido.');
     }
     $headers['Access-Control-Allow-Origin'] = $origin;
-    $headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
+    $headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
     $headers['Access-Control-Allow-Headers'] = 'Content-Type, Accept';
     $method = $server['REQUEST_METHOD'] ?? '';
     if ($method === 'OPTIONS') return $reply(204, '');
+    if ($method === 'GET') {
+        $lock = @fopen($stateFile, 'c+');
+        if (!$lock || !flock($lock, LOCK_EX)) {
+            if (is_resource($lock)) fclose($lock);
+            return $reply(503, 'Servicio temporalmente no disponible.');
+        }
+        try {
+            $raw = stream_get_contents($lock);
+            $state = $raw === '' ? [] : json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+            if (!isset($state['secret']) || !is_string($state['secret']) || strlen($state['secret']) < 64) {
+                $state['secret'] = bin2hex(random_bytes(32));
+                $json = json_encode($state, JSON_THROW_ON_ERROR);
+                rewind($lock);
+                if (!ftruncate($lock, 0) || fwrite($lock, $json) !== strlen($json) || !fflush($lock)) {
+                    throw new \RuntimeException('Unable to persist contact secret');
+                }
+            }
+            $issuedAt = $now;
+            $nonce = bin2hex(random_bytes(16));
+            $ip = hash('sha256', $server['REMOTE_ADDR'] ?? 'unknown');
+            $payload = $issuedAt . '.' . $nonce . '.' . $ip;
+            $signature = hash_hmac('sha256', $payload, $state['secret']);
+            $response = $reply(200, 'Proteccion preparada.', true);
+            $response['body']['challenge'] = $issuedAt . '.' . $nonce . '.' . $signature;
+            $response['body']['expiresIn'] = 1800;
+            return $response;
+        } catch (\Throwable $error) {
+            error_log('Ideamos contact challenge failed: ' . get_class($error));
+            return $reply(503, 'Servicio temporalmente no disponible.');
+        } finally {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+        }
+    }
     if ($method !== 'POST') {
-        $headers['Allow'] = 'POST, OPTIONS';
+        $headers['Allow'] = 'GET, POST, OPTIONS';
         return $reply(405, 'Metodo no permitido.');
     }
     if ((int)($server['CONTENT_LENGTH'] ?? 0) > 16384 || $files) return $reply(413, 'Solicitud demasiado grande.');
-    foreach (['_gotcha', 'nombre', 'empresa', 'email', 'telefono', 'mensaje', '_form_elapsed_ms'] as $key) {
+    foreach (['_gotcha', 'nombre', 'empresa', 'email', 'telefono', 'mensaje', '_form_elapsed_ms', '_form_challenge'] as $key) {
         if (isset($post[$key]) && !is_string($post[$key])) return $reply(422, 'Datos invalidos.');
     }
     if (trim($post['_gotcha'] ?? '') !== '') return $reply(200, 'Consulta recibida.', true);
@@ -49,7 +84,6 @@ function handle(array $server, array $post, array $files, callable $deliver, str
     }
     $emailKey = hash('sha256', strtolower($data['email']));
     $normalized = array_map(static fn($value) => strtolower(preg_replace('/\s+/u', ' ', trim($value))), $data);
-    $now = time();
     $ip = hash('sha256', $server['REMOTE_ADDR'] ?? 'unknown');
     $fingerprint = hash('sha256', json_encode($normalized));
     $lock = @fopen($stateFile, 'c+');
@@ -60,6 +94,24 @@ function handle(array $server, array $post, array $files, callable $deliver, str
     try {
         $raw = stream_get_contents($lock);
         $state = $raw === '' ? [] : json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        if (!isset($state['secret']) || !is_string($state['secret']) || strlen($state['secret']) < 64) {
+            return $reply(422, 'Actualiza la proteccion del formulario.');
+        }
+        $challenge = $post['_form_challenge'] ?? '';
+        $parts = explode('.', $challenge);
+        if (count($parts) !== 3 || !ctype_digit($parts[0]) || !ctype_xdigit($parts[1]) || !ctype_xdigit($parts[2])) {
+            return $reply(422, 'Actualiza la proteccion del formulario.');
+        }
+        [$issuedAt, $nonce, $signature] = $parts;
+        $challengeAge = $now - (int)$issuedAt;
+        $challengePayload = $issuedAt . '.' . $nonce . '.' . $ip;
+        $expectedSignature = hash_hmac('sha256', $challengePayload, $state['secret']);
+        if ($challengeAge < 2 || $challengeAge > 1800 || !hash_equals($expectedSignature, $signature)) {
+            return $reply(422, 'Actualiza la proteccion del formulario.');
+        }
+        $challengeKey = hash('sha256', $challenge);
+        $state['challenges'] = array_filter($state['challenges'] ?? [], static fn($at) => $at > $now - 1800);
+        if (isset($state['challenges'][$challengeKey])) return $reply(200, 'Consulta recibida.', true);
         $state['attempts'] = array_values(array_filter($state['attempts'] ?? [], static fn($r) => $r['at'] > $now - 3600));
         $state['sent'] = array_filter($state['sent'] ?? [], static fn($at) => $at > $now - 600);
         if (isset($state['sent'][$fingerprint])) return $reply(200, 'Esta consulta ya fue enviada.', true);
@@ -71,6 +123,7 @@ function handle(array $server, array $post, array $files, callable $deliver, str
             return $reply(429, 'Espera antes de enviar otra consulta.');
         }
         $state['attempts'][] = ['at' => $now, 'ip' => $ip, 'email' => $emailKey];
+        $state['challenges'][$challengeKey] = $now;
         // Persist the attempt before delivery; failures cannot bypass rate limiting.
         $persist = static function () use ($lock, &$state): void {
             $json = json_encode($state, JSON_THROW_ON_ERROR);

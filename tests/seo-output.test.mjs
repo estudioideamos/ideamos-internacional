@@ -174,6 +174,8 @@ test("el formulario conserva las defensas antispam", async () => {
   assert.match(source, /MIN_COMPLETION_TIME_MS/);
   assert.match(source, /SUBMISSION_COOLDOWN_MS/);
   assert.match(source, /DUPLICATE_WINDOW_MS/);
+  assert.match(source, /_form_challenge/);
+  assert.match(source, /requestChallenge/);
   assert.match(source, /AbortController/);
   assert.match(source, /maxLength=\{2000\}/);
 });
