@@ -94,7 +94,7 @@ export default function ContactLeadForm() {
       form.reset();
       startedAt.current = now;
       setStatus("success");
-      setFeedback("¡Gracias! Recibimos tu consulta y te responderemos a la brevedad.");
+      setFeedback("Recibimos tu consulta. Nuestro equipo te responderá a la brevedad para dar el próximo paso.");
       return;
     }
 
@@ -155,7 +155,7 @@ export default function ContactLeadForm() {
       setChallenge("");
       void requestChallenge();
       setStatus("success");
-      setFeedback("¡Gracias! Recibimos tu consulta y te responderemos a la brevedad.");
+      setFeedback("Recibimos tu consulta. Nuestro equipo te responderá a la brevedad para dar el próximo paso.");
     } catch {
       setChallenge("");
       void requestChallenge();
@@ -189,8 +189,17 @@ export default function ContactLeadForm() {
     <button className="contact-submit" type="submit" disabled={status === "sending"}>
       {status === "sending" ? "Enviando..." : "Enviar consulta"}
     </button>
-    <div className={`contact-form-status is-${status}`} role="status" aria-live="polite">
-      {feedback}
+    <div className={`contact-form-status is-${status}`} role="status" aria-live="polite" aria-atomic="true">
+      {status === "success" ? <>
+        <span className="contact-success-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="m8 16 5.5 5.5L24 11" pathLength="1" /></svg>
+        </span>
+        <span className="contact-success-copy">
+          <span className="contact-success-label">Mensaje enviado</span>
+          <strong>¡Gracias por escribirnos!</strong>
+          <span className="contact-success-description">{feedback}</span>
+        </span>
+      </> : feedback}
     </div>
   </form>;
 }
