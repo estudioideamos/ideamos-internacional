@@ -192,3 +192,10 @@
   }
 }
 
+
+/* Center the ecommerce CTA pair without the standalone primary CTA margins. */
+@media (min-width:701px){
+  #site-root#site-root .home-page .ecommerce-actions > .cta-glow{
+    margin-inline:0!important;
+  }
+}
