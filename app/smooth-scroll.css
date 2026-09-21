@@ -1,0 +1,4 @@
+/* Lenis owns desktop wheel easing; avoid competing native smooth scrolling. */
+html.lenis {
+  scroll-behavior: auto !important;
+}

@@ -1,3 +1,6 @@
+import "./smooth-scroll.css";
+import SmoothScroll from "../components/SmoothScroll";
+import "lenis/dist/lenis.css";
 import type { Metadata, Viewport } from "next";
 import DeferredAnalytics from "../components/DeferredAnalytics";
 import FloatingWhatsApp from "../components/FloatingWhatsApp";
@@ -146,6 +149,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body id="site-root">
         {children}
+        <SmoothScroll />
         <FloatingWhatsApp />
         <WhatsAppTracking />
         <DeferredAnalytics measurementId={GA_MEASUREMENT_ID} />
