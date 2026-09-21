@@ -17,6 +17,8 @@
     min-height:var(--home-shop-height);
   }
 
+  #site-root .home-page .shop-column article{padding:0!important}
+
   #site-root .home-page .phone-stage.phone-swap{
     height:var(--home-shop-height)!important;
     min-height:var(--home-shop-height)!important;
