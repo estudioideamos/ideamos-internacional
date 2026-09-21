@@ -91,7 +91,7 @@
     gap:clamp(22px,3.2vw,56px)!important;
     align-items:center;
   }
-  #site-root .home-page .shop-column{display:grid!important;grid-template-columns:1fr;gap:38px;min-width:0}
+  #site-root .home-page .shop-column{display:flex!important;flex-direction:column;gap:38px;min-width:0}
   #site-root .home-page .shop-column article{padding-block:clamp(18px,1.8vw,28px)}
   #site-root .home-page .shop-column h3{font-size:clamp(17px,1.35vw,24px)}
   #site-root .home-page .shop-column p{font-size:clamp(12px,.86vw,13px)}
