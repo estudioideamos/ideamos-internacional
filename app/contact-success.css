@@ -1,3 +1,33 @@
+/* Quiet legal note, independent of the contact section's eyebrow typography. */
+#site-root form > p.contact-recaptcha-note {
+  grid-column: 1 / -1;
+  max-width: 52ch;
+  margin: 12px 0 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
+  color: #969696;
+}
+#site-root form > p.contact-recaptcha-note a {
+  display: inline;
+  color: inherit;
+  font: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: underline;
+  text-decoration-color: #646464;
+  text-underline-offset: 3px;
+}
+#site-root form > p.contact-recaptcha-note a:hover { color: #dedede; }
+#site-root form > p.contact-recaptcha-note a:focus-visible {
+  outline: 2px solid #ff7900;
+  outline-offset: 3px;
+}
 /* Full-width status overrides the two-column grid used for form fields. */
 #site-root form > .contact-form-status {
   display: block;

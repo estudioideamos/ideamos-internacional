@@ -192,7 +192,7 @@ export default function ContactLeadForm() {
     <button className="contact-submit" type="submit" disabled={status === "sending"}>
       {status === "sending" ? "Enviando..." : "Enviar consulta"}
     </button>
-    <p style={{ fontSize: '12px', lineHeight: 1.6, color: '#b8b8b8', margin: '12px 0', gridColumn: '1 / -1' }}>
+    <p className="contact-recaptcha-note">
       Protegido por reCAPTCHA. Se aplican la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y los <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Términos de Google</a>.
     </p>
     <div className={`contact-form-status is-${status}`} role="status" aria-live="polite" aria-atomic="true">
