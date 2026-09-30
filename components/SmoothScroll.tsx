@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Lenis from "lenis";
 
 /** Gentle wheel inertia; touch and reduced-motion users keep native scrolling. */
 export default function SmoothScroll() {
@@ -11,13 +10,20 @@ export default function SmoothScroll() {
   useEffect(() => {
     const preference = window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)");
     let dispose: (() => void) | undefined;
+    let generation = 0;
 
-    const configure = () => {
+    const configure = async () => {
+      const currentGeneration = ++generation;
       dispose?.();
       dispose = undefined;
       if (!preference.matches) return;
 
+      let Lenis: typeof import("lenis").default;
+      try { ({ default: Lenis } = await import("lenis")); }
+      catch { return; } // Native scrolling remains available if the chunk fails.
+      if (currentGeneration !== generation || !preference.matches) return;
       const lenis = new Lenis({
+
         autoRaf: true,
         smoothWheel: true,
         wheelMultiplier: 0.45,
@@ -46,6 +52,7 @@ export default function SmoothScroll() {
     return () => {
       preference.removeEventListener("change", configure);
       dispose?.();
+      generation++;
     };
   }, [pathname]);
 

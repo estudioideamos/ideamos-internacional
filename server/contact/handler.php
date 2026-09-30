@@ -111,7 +111,8 @@ function handle(array $server, array $post, array $files, callable $deliver, str
         }
         $challengeKey = hash('sha256', $challenge);
         $state['challenges'] = array_filter($state['challenges'] ?? [], static fn($at) => $at > $now - 1800);
-        if (isset($state['challenges'][$challengeKey])) return $reply(200, 'Consulta recibida.', true);
+        // A consumed challenge is not proof that mail delivery succeeded.
+        if (isset($state['challenges'][$challengeKey])) return $reply(422, 'Actualiza la proteccion del formulario.');
         $state['attempts'] = array_values(array_filter($state['attempts'] ?? [], static fn($r) => $r['at'] > $now - 3600));
         $state['sent'] = array_filter($state['sent'] ?? [], static fn($at) => $at > $now - 600);
         if (isset($state['sent'][$fingerprint])) return $reply(200, 'Esta consulta ya fue enviada.', true);
