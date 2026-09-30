@@ -1,5 +1,6 @@
 /* Quiet legal note, independent of the contact section's eyebrow typography. */
 #site-root form > p.contact-recaptcha-note {
+  display: block;
   grid-column: 1 / -1;
   max-width: 52ch;
   margin: 12px 0 0;
