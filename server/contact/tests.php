@@ -54,7 +54,7 @@ try {
     check(\IdeamosContact\handle($expiredServer,$expiredPost,[],$transport,$state),422,'expired challenge rejected');
 
     check(\IdeamosContact\handle($server,$firstPost,[],$transport,$state),200,'valid message to fixed recipient');
-    check(\IdeamosContact\handle($server,$firstPost,[],$transport,$state),200,'challenge replay suppressed');
+    check(\IdeamosContact\handle($server,$firstPost,[],$transport,$state),422,'challenge replay rejected');
     if ($count !== 1) throw new RuntimeException('Duplicate sent');
     $ratePost = protectedPost($server,array_replace($post,['nombre'=>'Otra persona']),$transport,$state);
     check(\IdeamosContact\handle($server,$ratePost,[],$transport,$state),429,'rate limit');
@@ -82,5 +82,6 @@ try {
     $failurePost = protectedPost($server,$post,$failTransport,$state);
     check(\IdeamosContact\handle($server,$failurePost,[],$failTransport,$state),503,'transport failure');
     if ($count !== 1) throw new RuntimeException('Unexpected delivery');
+    check(\IdeamosContact\handle($server,$failurePost,[],$transport,$state),422,'failed delivery replay never reports success');
     echo "All checks passed. No emails sent.\n";
 } finally { unlink($state); }
