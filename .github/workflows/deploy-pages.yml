@@ -46,6 +46,7 @@ jobs:
           fi
       - run: npm run build:pages
         env:
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ vars.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages-path.outputs.base_path }}
       - run: node --test tests/seo-output.test.mjs
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5

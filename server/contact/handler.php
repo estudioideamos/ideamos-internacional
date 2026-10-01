@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 namespace IdeamosContact;
+require_once __DIR__ . '/recaptcha.php';
 
 /** Transport is injected so validation and delivery outcomes can be tested without sending mail. */
-function handle(array $server, array $post, array $files, callable $deliver, string $stateFile): array
+function handle(array $server, array $post, array $files, callable $deliver, string $stateFile, ?callable $verify = null): array
 {
     $origin = $server['HTTP_ORIGIN'] ?? '';
     $headers = ['Vary' => 'Origin', 'Cache-Control' => 'no-store', 'X-Content-Type-Options' => 'nosniff'];
@@ -58,7 +59,7 @@ function handle(array $server, array $post, array $files, callable $deliver, str
         return $reply(405, 'Metodo no permitido.');
     }
     if ((int)($server['CONTENT_LENGTH'] ?? 0) > 16384 || $files) return $reply(413, 'Solicitud demasiado grande.');
-    foreach (['_gotcha', 'nombre', 'empresa', 'email', 'telefono', 'mensaje', '_form_elapsed_ms', '_form_challenge'] as $key) {
+    foreach (['_gotcha', 'nombre', 'empresa', 'email', 'telefono', 'mensaje', '_form_elapsed_ms', '_form_challenge', 'g-recaptcha-response'] as $key) {
         if (isset($post[$key]) && !is_string($post[$key])) return $reply(422, 'Datos invalidos.');
     }
     if (trim($post['_gotcha'] ?? '') !== '') return $reply(200, 'Consulta recibida.', true);
@@ -134,6 +135,10 @@ function handle(array $server, array $post, array $files, callable $deliver, str
             }
         };
         $persist();
+        $token = $post['g-recaptcha-response'] ?? '';
+        if ($token === '' || strlen($token) > 4096 || !($verify ?? __NAMESPACE__ . '\verifyRecaptcha')($token)) {
+            return $reply(422, 'No pudimos validar la proteccion. Reintenta o contactanos por WhatsApp.');
+        }
         $body = "Consulta desde Ideamos Internacional\r\n\r\n";
         foreach (['nombre' => 'Nombre', 'empresa' => 'Empresa', 'email' => 'Email', 'telefono' => 'Telefono', 'mensaje' => 'Mensaje'] as $key => $label) {
             $body .= $label . ': ' . str_replace(["\r\n", "\r", "\n"], "\r\n", $data[$key]) . "\r\n";
